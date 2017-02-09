@@ -108,15 +108,21 @@ def subskribi(nomo, pasvorto):
 @app.route("/ensaluti/<nomo>/<pasvorto>")
 def ensaluti(nomo, pasvorto):
     response.content_type = "application/json; charset=utf-8"
-    uzanto = Uzanto.get(Uzanto.nomo == nomo)
-    if check_password(pasvorto, uzanto.pasvorto):
-        from random import SystemRandom
-        import string
-        seanco = ''.join(SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(32))
-        uzanto.seanco = seanco
-        uzanto.save()
-        return json.dumps({'seanco': seanco})
-    else:
+    try:
+        uzanto = Uzanto.get(Uzanto.nomo == nomo)
+    except Uzanto.DoesNotExist:
+        return json.dumps(False)
+    try:
+        if check_password(pasvorto, uzanto.pasvorto):
+            from random import SystemRandom
+            import string
+            seanco = ''.join(SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(32))
+            uzanto.seanco = seanco
+            uzanto.save()
+            return json.dumps({'seanco': seanco})
+        else:
+            return json.dumps(False)
+    except:
         return json.dumps(False)
 
 @app.route('/saluti/<seanco>')
@@ -128,14 +134,11 @@ def saluti(seanco):
 def statistiko(seanco):
     response.content_type = "application/json; charset=utf-8"
     uzanto = Uzanto.get(Uzanto.seanco == seanco)
-    argxentaj = Parto.select().where(Parto.uzanto == uzanto.id, Parto.orita == False).count()
-    oraj = Parto.select().where(Parto.uzanto == uzanto.id, Parto.orita == True).count()
-    muroj = Parto.select().where(Parto.uzanto == uzanto.id, Parto.murita == True).count()
     if uzanto.nomo == 'hsn6':
         uzantoj = Uzanto.select().count()
-        return json.dumps({'argxentaj':argxentaj, 'oraj':oraj, 'muroj':muroj, 'uzantoj':uzantoj})
+        return json.dumps({'uzantoj':uzantoj})
     else:
-        return json.dumps({'argxentaj':argxentaj, 'oraj':oraj, 'muroj':muroj})
+        return json.dumps(False)
 
 @app.route("/rango/<seanco>")
 def rango(seanco):
@@ -171,17 +174,6 @@ def ordo(seanco, ordoj):
         
     return json.dumps(True)
     
-@app.route("/konverti/<seanco>/<oro>")
-def konverti(seanco, oro):
-    response.content_type = "application/json; charset=utf-8"
-    uzanto = Uzanto.get(Uzanto.seanco == seanco)
-    oro = int(oro)
-    if uzanto.oro < oro or oro <= 0:
-        return json.dumps(False)
-    else:
-        Uzanto.update(mono=Uzanto.mono+oro*40, oro=Uzanto.oro-oro).where(Uzanto.seanco == seanco).execute()
-        return json.dumps(True)
-
 tempiloj = {}
 finitaj = []
 fintempo = 600
@@ -256,7 +248,7 @@ def rezigni(seanco, id, mana=False):
     uzanto = Uzanto.get(Uzanto.seanco == seanco)
     naturo = Uzanto.get(Uzanto.id == 1)
     try:
-        tttu = Tu.get((Tu.id == id) & (Tu.uzantoX != naturo) & ((Tu.uzantoO == uzanto) | (Tu.uzantoX == uzanto)) & (Tu.venkulo == naturo))
+        tttu = Tu.get((Tu.id == id) & (Tu.uzantoX != naturo) & ((Tu.uzantoO == uzanto) | (Tu.uzantoX == uzanto)) & (Tu.venkulo == naturo) & (Tu.egalita == False))
     except Tu.DoesNotExist:
         return json.dumps(False)
     if tttu.uzantoO == uzanto:
@@ -267,8 +259,9 @@ def rezigni(seanco, id, mana=False):
         oponanto = tttu.uzantoO
     minuso = abs(uzanto.poento-oponanto.poento)
     oponanto.poento += int(minuso/2)+3
-    if uzanto.poento > 0:
-        uzanto.poento -= int(minuso/2)
+    uzanto.poento -= int(minuso/2)
+    if uzanto.poento < 0:
+        uzanto.poento = 0
     oponanto.save()
     uzanto.save()
     tttu.donita = True
@@ -280,7 +273,10 @@ def rezigni(seanco, id, mana=False):
 @app.route('/tabuloj/<seanco>')
 def tabuloj(seanco):
     response.content_type = "application/json; charset=utf-8"
-    uzanto = Uzanto.get(Uzanto.seanco == seanco)
+    try:
+        uzanto = Uzanto.get(Uzanto.seanco == seanco)
+    except Uzanto.DoesNotExist:
+        return json.dumps('ensalutu')
     try:
         tttuj = Tu.select().where((Tu.uzantoO == uzanto) | (Tu.uzantoX == uzanto))
         if tttuj.count() == 0:
@@ -318,7 +314,9 @@ def tabulo(seanco, id):
     tempilo_uzantoX = 0
     tempilo_uzantoO = tempiloj['tempilo_{id}_uzantoO'.format(id=str(tttu.id))]
     tempilo_uzantoX = tempiloj['tempilo_{id}_uzantoX'.format(id=str(tttu.id))]
-    return json.dumps({'Tabulo':T,'uzantoO':tttu.uzantoO.nomo, 'uzantoX':tttu.uzantoX.nomo, 'vico':tttu.vico.nomo, 'lastaIndekso':tttu.lastaIndekso, 'uzanto':uzanto.nomo, 'xo':xo, 'oponanto':oponanto.nomo, 'venkulo':tttu.venkulo.nomo, 'tempilo_uzantoO':int(tempilo_uzantoO), 'tempilo_uzantoX':int(tempilo_uzantoX), 'egalita':tttu.egalita, 'fintempo':fintempo})
+    poentoO = tttu.uzantoO.poento
+    poentoX = tttu.uzantoX.poento
+    return json.dumps({'Tabulo':T,'uzantoO':tttu.uzantoO.nomo, 'uzantoX':tttu.uzantoX.nomo, 'vico':tttu.vico.nomo, 'lastaIndekso':tttu.lastaIndekso, 'uzanto':uzanto.nomo, 'xo':xo, 'oponanto':oponanto.nomo, 'venkulo':tttu.venkulo.nomo, 'tempilo_uzantoO':int(tempilo_uzantoO), 'tempilo_uzantoX':int(tempilo_uzantoX), 'egalita':tttu.egalita, 'fintempo':fintempo, 'poentoO':poentoO, 'poentoX':poentoX})
 
 @app.route('/agi/<seanco>/<id>/<I>/<i>')
 def agi(seanco, id, I, i):
@@ -333,7 +331,7 @@ def agi(seanco, id, I, i):
     if I > 8 or i > 8 or I < 0 or i < 0:
         return json.dumps('حرکت اشتباه!')
     try:
-        tttu = Tu.get((Tu.id == id) & (Tu.uzantoX != naturo) & ((Tu.uzantoO == uzanto) | (Tu.uzantoX == uzanto)) & (Tu.venkulo == naturo))
+        tttu = Tu.get((Tu.id == id) & (Tu.uzantoX != naturo) & ((Tu.uzantoO == uzanto) | (Tu.uzantoX == uzanto)) & (Tu.venkulo == naturo) & (Tu.egalita == False))
     except Tu.DoesNotExist:
         return json.dumps('بازی در جریان نیست!')
     if tttu.vico == uzanto and tttu.lastaIndekso != I and tttu.lastaIndekso != -1:
@@ -361,13 +359,17 @@ def agi(seanco, id, I, i):
     S = ''
     for III in range(0,9):
         S += T[str(III)]['S']
+    ##por preventi savigxi malnova tttu:
+    rezignita = False
     ##kontrolado de uzanto kun uzantoX kaj uzantoO estas por antauxzorgi kontraux malnecesaj kalkuloj:
     if uzanto == tttu.uzantoX and (S[0:3] == 'XXX' or S[3:6] == 'XXX' or S[6:9] == 'XXX' or S[0::3] == 'XXX' or S[1::3] == 'XXX' or S[2::3] == 'XXX' or S[0]+S[4]+S[8] == 'XXX' or S[2]+S[4]+S[6] == 'XXX'):
         finitaj.append(tttu.id)
         rezigni(tttu.uzantoO.seanco, tttu.id, mana=True)
+        rezignita = True
     elif uzanto == tttu.uzantoO and (S[0:3] == 'OOO' or S[3:6] == 'OOO' or S[6:9] == 'OOO' or S[0::3] == 'OOO' or S[1::3] == 'OOO' or S[2::3] == 'OOO' or S[0]+S[4]+S[8] == 'OOO' or S[2]+S[4]+S[6] == 'OOO'):
         finitaj.append(tttu.id)
         rezigni(tttu.uzantoX.seanco, tttu.id, mana=True)
+        rezignita = True
     elif not ('E' in S):
         finitaj.append(tttu.id)
         tttu.egalita = True
@@ -388,12 +390,15 @@ def agi(seanco, id, I, i):
     elif uzanto == tttu.uzantoX:
         xo = 'x'
         oponanto = tttu.uzantoO
+    if not rezignita:
+        tttu.save()
     tempilo_uzantoO = 0
     tempilo_uzantoX = 0
     tempilo_uzantoO = tempiloj['tempilo_{id}_uzantoO'.format(id=str(tttu.id))]
     tempilo_uzantoX = tempiloj['tempilo_{id}_uzantoX'.format(id=str(tttu.id))]
-    tttu.save()
-    return json.dumps({'Tabulo':T, 'uzantoO':tttu.uzantoO.nomo, 'uzantoX':tttu.uzantoX.nomo, 'vico':tttu.vico.nomo, 'lastaIndekso':tttu.lastaIndekso, 'uzanto':uzanto.nomo, 'xo':xo, 'oponanto':oponanto.nomo, 'venkulo':tttu.venkulo.nomo, 'tempilo_uzantoO':int(tempilo_uzantoO), 'tempilo_uzantoX':int(tempilo_uzantoX), 'egalita':tttu.egalita, 'fintempo':fintempo})
+    poentoO = tttu.uzantoO.poento
+    poentoX = tttu.uzantoX.poento
+    return json.dumps({'Tabulo':T, 'uzantoO':tttu.uzantoO.nomo, 'uzantoX':tttu.uzantoX.nomo, 'vico':tttu.vico.nomo, 'lastaIndekso':tttu.lastaIndekso, 'uzanto':uzanto.nomo, 'xo':xo, 'oponanto':oponanto.nomo, 'venkulo':tttu.venkulo.nomo, 'tempilo_uzantoO':int(tempilo_uzantoO), 'tempilo_uzantoX':int(tempilo_uzantoX), 'egalita':tttu.egalita, 'fintempo':fintempo, 'poentoO':poentoO, 'poentoX':poentoX})
 
 @app.route('/nuligi/<seanco>/<id>')
 def nuligi(seanco, id):

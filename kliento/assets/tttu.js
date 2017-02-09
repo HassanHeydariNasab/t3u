@@ -4,8 +4,8 @@ if(window.location.toString().match(/android/)){
   r = new RestClient('http://t3u-ajor.rhcloud.com', {contentType: 'json'});
 }
 else{
-  //r = new RestClient('http://127.0.0.1:8080', {contentType: 'json'});
-  r = new RestClient('http://t3u-ajor.rhcloud.com', {contentType: 'json'});
+  r = new RestClient('http://127.0.0.1:8080', {contentType: 'json'});
+  //r = new RestClient('http://t3u-ajor.rhcloud.com', {contentType: 'json'});
 }
 
 var cl = console.log
@@ -28,9 +28,15 @@ var rekomencu = document.getElementById('rekomencu')
 var rezignu = document.getElementById('rezignu')
 var nuligu = document.getElementById('nuligu')
 
+venkulo.innerHTML = 'لطفاً صبر کنید…'
+
 rezignu.style.display = 'none'
 rekomencu.style.display = 'none'
 nuligu.style.display = 'none'
+
+if(window.localStorage.getItem("seanco") == undefined){
+  window.location = 'ensaluti.html'
+}
 
 function persa(cifero){
   return cifero.replace(/0/g, "۰").replace(/1/g, "۱").replace(/2/g, "۲").replace(/3/g, "۳").replace(/4/g, "۴").replace(/5/g, "۵").replace(/6/g, "۶").replace(/7/g, "۷").replace(/8/g, "۸").replace(/9/g, "۹")
@@ -39,18 +45,20 @@ function MSS(s){return(s-(s%=60))/60+(9<s?':':':0')+s}
 function tempili(k){
   if(k['vico'] == k['uzantoO']){
     k['tempilo_uzantoO']+=1
-    informoj_uzantoO.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoO'])).toString())+'<br>'+k['uzantoO']}
+    informoj_uzantoO.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoO'])).toString())+'<br>'+k['uzantoO']+'<br>امتیاز: '+persa(k['poentoO'].toString())
+  }
   else if(k['vico'] == k['uzantoX']){
     k['tempilo_uzantoX']+=1
-    informoj_uzantoX.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoX'])).toString())+'<br>'+k['uzantoX']}
-}
-function reveni(){
-  window.location = 'ludo.html'
+    informoj_uzantoX.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoX'])).toString())+'<br>'+k['uzantoX']+'<br>امتیاز: '+persa(k['poentoX'].toString())
+  }
 }
 function preni_tabulojn(){
   var prenita = false
   r.tabuloj(window.localStorage.getItem('seanco')).get().then(function(k){
-    if(!!k){
+    if(k == 'ensalutu'){
+      window.location = 'ensaluti.html'     
+    }
+    else if(!!k){
       //uzanto havas almenaux unu tabulon:
       var tuo = ''
       for(var t in k){
@@ -159,7 +167,7 @@ function mapi(k){
     T[i.toString()].className = 'T'
   }
   if(k['uzantoX'] == 'naturo'){
-    venkulo.innerHTML = 'در انتظار یک بازیکن دیگر…'
+    venkulo.innerHTML = 'در انتظار یک بازیکن دیگر…<br>امتیاز شما: '+persa(k['poentoO'].toString())
     informoj_uzantoO.innerHTML = ''
     informoj_uzantoX.innerHTML = ''
     informoj_uzantoO.className = ''
@@ -173,11 +181,11 @@ function mapi(k){
     rezignu.style.display = 'none'
     rekomencu.style.display = ''
     nuligu.style.display = 'none'
-    informoj_uzantoO.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoO'])).toString())+'<br>'+k['uzantoO']
-    informoj_uzantoX.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoX'])).toString())+'<br>'+k['uzantoX']
+    informoj_uzantoO.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoO'])).toString())+'<br>'+k['uzantoO']+'<br>امتیاز: '+persa(k['poentoO'].toString())
+    informoj_uzantoX.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoX'])).toString())+'<br>'+k['uzantoX']+'<br>امتیاز: '+persa(k['poentoX'].toString())
     informoj_uzantoO.className = ''
     informoj_uzantoX.className = ''
-    venkulo.innerHTML = 'مساوی!'
+    venkulo.innerHTML = 'مساوی!<br>امتیاز شما: '+persa(k['poentoO'].toString())
   }
   else{
     if(k['venkulo'] != 'naturo'){
@@ -185,11 +193,16 @@ function mapi(k){
       rezignu.style.display = 'none'
       rekomencu.style.display = ''
       nuligu.style.display = 'none'
-      informoj_uzantoO.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoO'])).toString())+'<br>'+k['uzantoO']
-      informoj_uzantoX.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoX'])).toString())+'<br>'+k['uzantoX']
+      informoj_uzantoO.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoO'])).toString())+'<br>'+k['uzantoO']+'<br>امتیاز: '+persa(k['poentoO'].toString())
+      informoj_uzantoX.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoX'])).toString())+'<br>'+k['uzantoX']+'<br>امتیاز: '+persa(k['poentoX'].toString())
       informoj_uzantoO.className = ''
       informoj_uzantoX.className = ''
-      venkulo.innerHTML = 'پیروز: '+k['venkulo']
+      if(k['uzanto'] == k['uzantoO']){
+        venkulo.innerHTML = 'پیروز: '+k['venkulo'].toString()+'<br>امتیاز شما: '+persa(k['poentoO'].toString())
+      }
+      else if(k['uzanto'] == k['uzantoX']){
+        venkulo.innerHTML = 'پیروز: '+k['venkulo'].toString()+'<br>امتیاز شما: '+persa(k['poentoX'].toString())
+      }
     }
     else if(k['venkulo'] == 'naturo'){
       var n = 0
@@ -212,8 +225,8 @@ function mapi(k){
       else{
         nuligu.style.display = 'none'
       }
-      informoj_uzantoO.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoO'])).toString())+'<br>'+k['uzantoO']
-      informoj_uzantoX.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoX'])).toString())+'<br>'+k['uzantoX']
+      informoj_uzantoO.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoO'])).toString())+'<br>'+k['uzantoO']+'<br>امتیاز: '+persa(k['poentoO'].toString())
+      informoj_uzantoX.innerHTML = persa(MSS((k['fintempo']-k['tempilo_uzantoX'])).toString())+'<br>'+k['uzantoX']+'<br>امتیاز: '+persa(k['poentoX'].toString())
       if(k['vico'] == k['uzantoO']){
         informoj_uzantoO.className = 'blinki'
         informoj_uzantoX.className = ''

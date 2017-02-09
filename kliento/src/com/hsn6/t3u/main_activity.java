@@ -29,7 +29,7 @@ public class main_activity extends Activity
     WebView myWebView;
     IabHelper mHelper;
     static String sku = "";
-    static final String sku = "pagita";
+    static final String skup = "pagita";
     String nl = "";
     private static final String TAG = "MyActivity";
     String base64EncodedPublicKey = "MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwDv4SowX/nV9nyqQRLaxtvXtdUpludohGUsi88gkNBVC9V3a/aLZlRom0H4gYEsECARubBGbE24y3gXaA/y/C1WrHgnCQB1u8+QtuyYAPzz8AQbk0iKiMz6v9y28IkbILj/gVNLkoNNyf7UlKWmpAd7jE2SV9m89cpFj0LDT6LFzX8bYeBw8n1M3bgQc5C0/HFlCV/gFhbHhBAQM6S9p5qkx57EBMCHyAz0egOpJ6UCAwEAAQ==";
@@ -166,10 +166,10 @@ public class main_activity extends Activity
 		 */
 		
 		// Check for gas delivery -- if we own gas, we should fill up the tank immediately
-		Purchase gasPurchase = inventory.getPurchase(sku);
+		Purchase gasPurchase = inventory.getPurchase(skup);
 		if (gasPurchase != null && verifyDeveloperPayload(gasPurchase)) {
 		    Log.d(TAG, "We have sku. Consuming it.");
-		    mHelper.consumeAsync(inventory.getPurchase(sku), mConsumeFinishedListener);
+		    mHelper.consumeAsync(inventory.getPurchase(skup), mConsumeFinishedListener);
 		    return;
 		}
 	    }
@@ -274,7 +274,7 @@ public class main_activity extends Activity
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
 			if(isPackageExisted("com.farsitel.bazaar")){			
-			    mHelper.launchPurchaseFlow(main_activity.this, sku, 2000, mPurchaseFinishedListener, nl);
+			    mHelper.launchPurchaseFlow(main_activity.this, skup, 2000, mPurchaseFinishedListener, nl);
 			}
 			else{
 			    Toast.makeText(main_activity.this, R.string.bazar_neinstalita, Toast.LENGTH_SHORT).show();

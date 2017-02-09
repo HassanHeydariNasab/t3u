@@ -196,7 +196,6 @@ td{
 }
 #informoj{
     color: #212121;
-    height: 10vh;
     width: 100%;
     text-align: center;
     font-size: 2vh;
@@ -292,6 +291,6 @@ td{
     height: 100%;
 }
 #venkulo{
-    font-size: 5vw;
+    font-size: 4.3vw;
     width: 30%;
 }
