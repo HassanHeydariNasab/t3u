@@ -1,0 +1,1 @@
+[i.nomo for i in Uzanto.select(Uzanto.nomo)]
