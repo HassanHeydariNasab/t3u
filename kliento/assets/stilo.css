@@ -2,10 +2,6 @@
     font-family: vzr;
     src: url('Vazir.woff');
 }
-@font-face {
-    font-family: mvzr;
-    src: url('Vazir-Code.woff');
-}
 *{
     padding: 0px;
     margin: 0px;

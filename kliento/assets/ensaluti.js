@@ -4,8 +4,8 @@ if(window.location.toString().match(/android/)){
   r = new RestClient('http://t3u-ajor.rhcloud.com', {contentType: 'json'});
 }
 else{
-  r = new RestClient('http://127.0.0.1:8080', {contentType: 'json'});
-  //r = new RestClient('http://t3u-ajor.rhcloud.com', {contentType: 'json'});
+  //r = new RestClient('http://127.0.0.1:8080', {contentType: 'json'});
+  r = new RestClient('http://t3u-ajor.rhcloud.com', {contentType: 'json'});
 }
 r.res('ensaluti')
 r.res('ordo')
@@ -24,7 +24,7 @@ function ensaluti(){
       window.localStorage.setItem('seanco', k['seanco'])
       window.localStorage.setItem('x', k['x'])
       window.localStorage.setItem('y', k['y'])
-      window.location = 'ludo.html'
+      window.location = 'tttu.html'
       }
   })
 }

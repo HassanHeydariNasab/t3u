@@ -2,10 +2,6 @@
     font-family: vzr;
     src: url('Vazir.woff');
 }
-@font-face {
-    font-family: mvzr;
-    src: url('Vazir-Code.woff');
-}
 *{
     padding: 0px;
     margin: 0px;
@@ -142,7 +138,6 @@ body{
     height: 100vh;
     max-height: 60vh;
     width: 100%;
-    font-family: mvzr;
     font-size: 2.41vh;
     table-layout:fixed;
     border-spacing: 1vh;

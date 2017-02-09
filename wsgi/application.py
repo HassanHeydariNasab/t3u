@@ -265,7 +265,7 @@ def rezigni(seanco, id, mana=False):
     elif tttu.uzantoX == uzanto:
         tttu.venkulo = tttu.uzantoO
         oponanto = tttu.uzantoO
-    minuso = abs(uzanto.poento-oponanto)
+    minuso = abs(uzanto.poento-oponanto.poento)
     oponanto.poento += int(minuso/2)+3
     if uzanto.poento > 0:
         uzanto.poento -= int(minuso/2)
