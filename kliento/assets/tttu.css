@@ -19,120 +19,6 @@ body{
     overflow-x: hidden;
     background-color: #e0e0e0;
 }
-@keyframes montri_kasxi{
-    0%{
-	transform: none;
-	opacity: 0;
-    }
-    40%{
-	transform: translate(0px,-10vh);
-	opacity:1;
-    }
-    80%{
-	transform: translate(0px,-10vh);
-	opacity:1;
-    }
-    100%{
-	transform: none;
-	opacity: 0;
-    }
-}
-@keyframes montri{
-    0%{
-	transform: none;
-	opacity: 0;
-    }
-    100%{
-	transform: translate(0px,-10vh);
-	opacity:1;
-    }
-}
-@keyframes kasxi{
-    0%{
-	transform: translate(0px,-10vh);
-	opacity:1;
-    }
-    100%{
-	transform: none;
-	opacity: 0;
-    }
-}
-#informo{
-    display: none;
-    position: absolute;
-    top: 40vh;
-    right: 0px;
-    font-size: 5vh;
-    width: 100vw;
-    padding-right: 10vw;
-    direction: rtl;
-    text-align: right;
-    color: #43A047;
-    background-color: #212121;
-    text-align: right;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-    animation-timing-function: ease-in-out;
-    animation-direction: alternate;
-    -webkit-animation-name: montri_kasxi;
-    animation-name: montri_kasxi;
-    
-    -webkit-animation-duration: 2s;
-    animation-duration: 2s;
-    
-    -webkit-animation-delay: 0s;
-    -moz-animation-delay: 0s;
-    animation-delay: 0s;
-
-    transition: montri_kasxi 0s linear;
-}
-#prompto{
-    display: none;
-    position: absolute;
-    bottom: 25vh;
-    right: 0px;
-    font-size: 5vh;
-    width: 100vw;
-    color: #43A047;
-    background-color: #212121;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-    text-align: right;
-    padding-top: 5vh;
-}
-.montri{
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-    animation-timing-function: ease-in-out;
-    animation-direction: alternate;
-    -webkit-animation-name: montri;
-    animation-name: montri;
-    
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    
-    -webkit-animation-delay: 0s;
-    -moz-animation-delay: 0s;
-    animation-delay: 0s;
-
-    transition: montri 0s linear;
-}
-.kasxi{
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-    animation-timing-function: ease-in-out;
-    animation-direction: alternate;
-    -webkit-animation-name: kasxi;
-    animation-name: kasxi;
-    
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    
-    -webkit-animation-delay: 0s;
-    -moz-animation-delay: 0s;
-    animation-delay: 0s;
-
-    transition: kasxi 0s linear;
-}
 #tabulo{
     background-color: #e0e0e0;
     height: 100vh;
@@ -293,4 +179,140 @@ td{
 #venkulo{
     font-size: 4.3vw;
     width: 30%;
+}
+#fermu{
+    background-color: #212121;
+    color: #fff;
+    font-size: calc(3vh + 3vw);
+    font-family: vzr;
+    text-align: center;
+}
+@keyframes montri_kasxi{
+    0%{
+	transform: none;
+	opacity: 0;
+    }
+    40%{
+	transform: translate(0px,-10vh);
+	opacity:1;
+    }
+    80%{
+	transform: translate(0px,-10vh);
+	opacity:1;
+    }
+    100%{
+	transform: none;
+	opacity: 0;
+    }
+}
+@keyframes montri{
+    0%{
+	transform: none;
+	opacity: 0;
+    }
+    100%{
+	transform: translate(0px,-10vh);
+	opacity:1;
+    }
+}
+@keyframes kasxi{
+    0%{
+	transform: translate(0px,-10vh);
+	opacity:1;
+    }
+    100%{
+	transform: none;
+	opacity: 0;
+    }
+}
+#informo{
+    display: none;
+    position: absolute;
+    top: 40vh;
+    right: 0px;
+    font-size: 5vh;
+    width: 100vw;
+    padding-right: 10vw;
+    direction: rtl;
+    text-align: right;
+    color: #43A047;
+    background-color: #212121;
+    text-align: right;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    animation-timing-function: ease-in-out;
+    animation-direction: alternate;
+    -webkit-animation-name: montri_kasxi;
+    animation-name: montri_kasxi;
+    
+    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
+    
+    -webkit-animation-delay: 0s;
+    -moz-animation-delay: 0s;
+    animation-delay: 0s;
+
+    transition: montri_kasxi 0s linear;
+}
+#prompto{
+    display: none;
+    position: absolute;
+    top: 12vh;
+    right: 0px;
+    font-size: 4vh;
+    width: 100vw;
+    color: #43A047;
+    background-color: #212121;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    text-align: right;
+    padding-top: 5vh;
+}
+.montri{
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    animation-timing-function: ease-in-out;
+    animation-direction: alternate;
+    -webkit-animation-name: montri;
+    animation-name: montri;
+    
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    
+    -webkit-animation-delay: 0s;
+    -moz-animation-delay: 0s;
+    animation-delay: 0s;
+
+    transition: montri 0s linear;
+}
+.kasxi{
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    animation-timing-function: ease-in-out;
+    animation-direction: alternate;
+    -webkit-animation-name: kasxi;
+    animation-name: kasxi;
+    
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    
+    -webkit-animation-delay: 0s;
+    -moz-animation-delay: 0s;
+    animation-delay: 0s;
+
+    transition: kasxi 0s linear;
+}
+#rangu{
+    width: 100vw;
+    background-color: #43A047;
+    color: #fff;
+    font-size: calc(3vh + 3vw);
+    font-family: vzr;
+    text-align: center;   
+}
+#prompto > table{
+    width: 100%;
+    font-size: 4.3vh;
+}
+tbody > tr#kapo > td{
+    border-bottom: 1.41vh #00C853 solid;
 }

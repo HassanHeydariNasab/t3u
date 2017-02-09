@@ -17,6 +17,7 @@ r.res('tabulo')
 r.res('agi')
 r.res('rezigni')
 r.res('nuligi')
+r.res('rango')
 
 var T = document.getElementsByClassName('T')
 var informoj = document.getElementById('informoj')
@@ -40,6 +41,37 @@ if(window.localStorage.getItem("seanco") == undefined){
 
 function persa(cifero){
   return cifero.replace(/0/g, "۰").replace(/1/g, "۱").replace(/2/g, "۲").replace(/3/g, "۳").replace(/4/g, "۴").replace(/5/g, "۵").replace(/6/g, "۶").replace(/7/g, "۷").replace(/8/g, "۸").replace(/9/g, "۹")
+}
+function prompti(msg){
+  var prompto = document.getElementById('prompto')
+  prompto.innerHTML = msg
+  prompto.style.display = 'initial'
+  prompto.className = 'montri'
+}
+function kasxi_prompton(){
+  var prompto = document.getElementById('prompto')
+  prompto.className = 'kasxi'
+  setTimeout( function(){prompto.style.display = 'none'}, 1000 );
+}
+function montri_rangon(){
+  r.rango(window.localStorage.getItem('seanco')).get().then(function(k){
+    var rangoj = '<table><tr id="kapo"><td>رتبه</td><td>بازیکن</td><td>امتیاز</td>'
+    for (i=0;i<7;i++){
+      try{
+        rangoj += '<tr><td>'+persa((i+1).toString())+'</td><td>'+k['sep_unuaj'][i.toString()][0]+'</td><td>'+persa(k['sep_unuaj'][i.toString()][1])+'</td></tr>'
+      }
+      catch(e){}
+    }
+    if(k['uzanto_rango'] > 7){
+      rangoj += '<tr><td>...</td><td>...</td><td>...</td></tr>'
+      rangoj += '<tr><td>'+persa(k['uzanto_rango'].toString())+'</td><td>'+k['uzanto']+'</td><td>'+persa(k['uzanto_poento'].toString())+'</td></tr>'
+    }
+    prompti(rangoj+'</table><div id="fermu" onclick="kasxi_prompton()">بستن</div>')
+  })
+}
+function montri_helpanton(){
+  prompti('<iframe src="i.html"></iframe>'
+          + '<div id="fermu" onclick="kasxi_prompton()">بستن</div>')
 }
 function MSS(s){return(s-(s%=60))/60+(9<s?':':':0')+s}
 function tempili(k){

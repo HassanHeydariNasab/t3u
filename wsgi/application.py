@@ -102,6 +102,12 @@ def subskribi(nomo, pasvorto):
         return json.dumps(False)
     except Uzanto.DoesNotExist:
         uzanto = Uzanto(nomo=nomo, pasvorto=get_hashed_password(pasvorto))
+        uzantoj = Uzanto.select()
+        poentoj = []
+        for u in uzantoj:
+            poentoj.append(u.poento)
+        while uzanto.poento in poentoj:
+            uzanto.poento += 1
         uzanto.save()
         return json.dumps(True)
 
@@ -144,11 +150,18 @@ def statistiko(seanco):
 def rango(seanco):
     response.content_type = "application/json; charset=utf-8"
     uzanto = Uzanto.get(Uzanto.seanco == seanco)
-    uzantoj = Uzanto.select().order_by(-Uzanto.poento).limit(7)
+    sep_unuaj_uzantoj = Uzanto.select().order_by(-Uzanto.poento).limit(7)
     sep_unuaj = {}
-    for (uzanto, i) in zip(uzantoj[:7], range(0,7)):
-        sep_unuaj[str(i)] = (uzanto.nomo, str(uzanto.poento))
-    return json.dumps(sep_unuaj)
+    for (u, i) in zip(sep_unuaj_uzantoj[:7], range(0,7)):
+        sep_unuaj[str(i)] = (u.nomo, str(u.poento))
+    idj = []
+    uzantoj = Uzanto.select().order_by(-Uzanto.poento)
+    for u in uzantoj:
+        idj.append(u.id)
+    print(idj)
+    uzanto_rango = idj.index(uzanto.id) + 1
+    uzanto_poento = uzanto.poento
+    return json.dumps({'sep_unuaj':sep_unuaj, 'uzanto_poento':uzanto_poento, 'uzanto_rango':uzanto_rango, 'uzanto':uzanto.nomo})
 
 @app.route('/ordo/<seanco>/<ordoj>')
 def ordo(seanco, ordoj):
@@ -258,10 +271,23 @@ def rezigni(seanco, id, mana=False):
         tttu.venkulo = tttu.uzantoO
         oponanto = tttu.uzantoO
     minuso = abs(uzanto.poento-oponanto.poento)
-    oponanto.poento += int(minuso/2)+3
-    uzanto.poento -= int(minuso/2)
+    if oponanto.poento >= uzanto.poento:
+        oponanto.poento += int(10/minuso)+3
+        uzanto.poento -= int(10/minuso)
+    else:
+        oponanto.poento += int(minuso/2)+3
+        uzanto.poento -= int(minuso/2)
     if uzanto.poento < 0:
         uzanto.poento = 0
+    uzantoj = Uzanto.select()
+    poentoj = []
+    for u in uzantoj:
+        poentoj.append(u.poento)
+    while uzanto.poento in poentoj:
+        uzanto.poento += 1
+    poentoj.append(uzanto.poento)
+    while oponanto.poento in poentoj:
+        oponanto.poento += 1
     oponanto.save()
     uzanto.save()
     tttu.donita = True
