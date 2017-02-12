@@ -83,6 +83,7 @@ td{
 #informoj{
     color: #212121;
     width: 100%;
+    max-height: 12vh;
     text-align: center;
     font-size: 2vh;
     direction: rtl;
@@ -90,36 +91,26 @@ td{
     border-top: 1vh #212121 solid;
     border-bottom: 1vh #212121 solid;
 }
-#revenu{
-    width: 100vw;
-    background-color: #43A047;
-    color: #fff;
-    font-size: calc(3vh + 3vw);
-    font-family: vzr;
-    text-align: center;
-    border-bottom: 1vh #212121 solid;
-}
 #rezignu, #nuligu{
     width: 100vw;
-    background-color: #E53935;
-    color: #fff;
-    font-size: calc(3vh + 3vw);
+    background-color: #D50000;
+    color: #212121;
+    font-size: 5vh;
     font-family: vzr;
     text-align: center;
 }
 #rekomencu{
     width: 100vw;
-    background-color: #43A047;
-    color: #fff;
-    font-size: calc(3vh + 3vw);
+    background-color: #00C853;
+    color: #212121;
+    font-size: 5vh;
     font-family: vzr;
     text-align: center;
-    margin-top: 1vh;
 }
 #tu{
     width: 100%;
     height: 8vh;
-    font-size: 4vw;
+    font-size: 2vh;
     text-align: right;
     border: none;
     font-family: vzr;
@@ -129,7 +120,7 @@ td{
 }
 #informoj_uzantoX, #informoj_uzantoO{
     width: 20%;
-    font-size: 4.3vw;
+    font-size: 2vh;
 }
 #x_logo, #o_logo{
     background-repeat: no-repeat;
@@ -181,9 +172,17 @@ td{
     width: 30%;
 }
 #fermu{
-    background-color: #212121;
-    color: #fff;
-    font-size: calc(3vh + 3vw);
+    background-color: #00C853;
+    color: #212121;
+    font-size: 5vh;
+    font-family: vzr;
+    text-align: center;
+}
+#acxetu{
+    color: #00C853;
+    border: 1vh #00c853 solid;
+    border-radius: 2vh;
+    margin-bottom: 1vh;
     font-family: vzr;
     text-align: center;
 }
@@ -257,13 +256,13 @@ td{
 #prompto{
     display: none;
     position: absolute;
-    top: 12vh;
+    bottom: 2vh;
     right: 0px;
     font-size: 4vh;
     width: 100vw;
     color: #43A047;
     background-color: #212121;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    box-shadow: 0 14px 28px 28px rgba(0,0,0,0.4), 0 5px 16px 6px rgba(0,0,0,0.42);
     text-align: right;
     padding-top: 5vh;
 }
@@ -303,11 +302,11 @@ td{
 }
 #rangu{
     width: 100vw;
-    background-color: #43A047;
-    color: #fff;
-    font-size: calc(3vh + 3vw);
+    background-color: #00C853;
+    color: #212121;
+    font-size: 5vh;
     font-family: vzr;
-    text-align: center;   
+    text-align: center;
 }
 #prompto > table{
     width: 100%;
@@ -315,4 +314,10 @@ td{
 }
 tbody > tr#kapo > td{
     border-bottom: 1.41vh #00C853 solid;
+}
+table#kontroliloj > tbody > tr{
+    height: 33%;
+}
+#kontroliloj{
+    width: 100vw;
 }

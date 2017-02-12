@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.hsn6.t3u.util;
+package com.hsn6.uttt.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;

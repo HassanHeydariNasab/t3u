@@ -1,4 +1,4 @@
-package com.hsn6.t3u;
+package com.hsn6.uttt;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import android.widget.Toast;
 import android.content.Context;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import com.hsn6.t3u.util.*;
+import com.hsn6.uttt.util.*;
 import java.io.IOException;
 import android.webkit.JavascriptInterface;
 import java.util.Arrays;
@@ -32,7 +32,7 @@ public class main_activity extends Activity
     static final String skup = "pagita";
     String nl = "";
     private static final String TAG = "MyActivity";
-    String base64EncodedPublicKey = "MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwDv4SowX/nV9nyqQRLaxtvXtdUpludohGUsi88gkNBVC9V3a/aLZlRom0H4gYEsECARubBGbE24y3gXaA/y/C1WrHgnCQB1u8+QtuyYAPzz8AQbk0iKiMz6v9y28IkbILj/gVNLkoNNyf7UlKWmpAd7jE2SV9m89cpFj0LDT6LFzX8bYeBw8n1M3bgQc5C0/HFlCV/gFhbHhBAQM6S9p5qkx57EBMCHyAz0egOpJ6UCAwEAAQ==";
+    String base64EncodedPublicKey = "MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwCuXB0DQUK9Bn45s8EBQ4HobVE13ydasPJsToZtpyr66KLwUO4EkHsIXvWdfapw7vpbib90kP18OyQa3b6JcmAmwhaenLkpDcCxBlO2RInDHPb/1cHgwz9CN/fvU5bYpFd1xypP8+a7vIjKv7QW2XIgvpuUlkrYculLX4FLnKwE/3bdOYA7qCb4YhTOAjT1tX2oL3GnpVQ21Dw2aHUP11NFred+FuJdTCAnNyXcx6kCAwEAAQ==";
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -265,7 +265,7 @@ public class main_activity extends Activity
 	return super.onKeyDown(keyCode, event);
     }
     @JavascriptInterface
-    public void acxeti_dialogo(String amount){
+    public void acxeti_dialogo(){
 	new AlertDialog.Builder(this)
 	    //.setIcon(android.R.drawable.ic_dialog_alert)
 	    .setTitle(R.string.buy)

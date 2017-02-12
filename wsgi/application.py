@@ -151,6 +151,7 @@ def rango(seanco):
     response.content_type = "application/json; charset=utf-8"
     uzanto = Uzanto.get(Uzanto.seanco == seanco)
     sep_unuaj_uzantoj = Uzanto.select().order_by(-Uzanto.poento).limit(7)
+    uzanto_en_sep_unuaj = uzanto in sep_unuaj_uzantoj
     sep_unuaj = {}
     for (u, i) in zip(sep_unuaj_uzantoj[:7], range(0,7)):
         sep_unuaj[str(i)] = (u.nomo, str(u.poento))
@@ -158,10 +159,11 @@ def rango(seanco):
     uzantoj = Uzanto.select().order_by(-Uzanto.poento)
     for u in uzantoj:
         idj.append(u.id)
-    print(idj)
-    uzanto_rango = idj.index(uzanto.id) + 1
-    uzanto_poento = uzanto.poento
-    return json.dumps({'sep_unuaj':sep_unuaj, 'uzanto_poento':uzanto_poento, 'uzanto_rango':uzanto_rango, 'uzanto':uzanto.nomo})
+    if uzanto.pagita:
+        uzanto_rango = idj.index(uzanto.id) + 1
+        return json.dumps({'sep_unuaj':sep_unuaj, 'uzanto_poento':uzanto.poento, 'uzanto_rango':uzanto_rango, 'uzanto':uzanto.nomo, 'pagita':uzanto.pagita})
+    else:
+        return json.dumps({'sep_unuaj':sep_unuaj, 'pagita':uzanto.pagita, 'uzanto_en_sep_unuaj':uzanto_en_sep_unuaj})
 
 @app.route('/ordo/<seanco>/<ordoj>')
 def ordo(seanco, ordoj):

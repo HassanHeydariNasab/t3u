@@ -1,7 +1,7 @@
 var r
 if(window.location.toString().match(/android/)){
-  //r = new RestClient('http://10.0.2.2:8080', {contentType: 'json'});
-  r = new RestClient('http://t3u-ajor.rhcloud.com', {contentType: 'json'});
+  r = new RestClient('http://10.0.2.2:8080', {contentType: 'json'});
+  //r = new RestClient('http://t3u-ajor.rhcloud.com', {contentType: 'json'});
 }
 else{
   r = new RestClient('http://127.0.0.1:8080', {contentType: 'json'});
@@ -18,6 +18,7 @@ r.res('agi')
 r.res('rezigni')
 r.res('nuligi')
 r.res('rango')
+r.res('ordo')
 
 var T = document.getElementsByClassName('T')
 var informoj = document.getElementById('informoj')
@@ -62,11 +63,29 @@ function montri_rangon(){
       }
       catch(e){}
     }
-    if(k['uzanto_rango'] > 7){
+    
+    if(!k['pagita'] && !k['uzanto_en_sep_unuaj']){
+      prompti(rangoj+'</table><div id="acxetu" onclick="acxetu()">رتبهٔ من را نشان بده</div><div id="fermu" onclick="kasxi_prompton()">بستن</div>')
+    }
+    else if(k['pagita'] && k['uzanto_rango'] > 7){
       rangoj += '<tr><td>...</td><td>...</td><td>...</td></tr>'
       rangoj += '<tr><td>'+persa(k['uzanto_rango'].toString())+'</td><td>'+k['uzanto']+'</td><td>'+persa(k['uzanto_poento'].toString())+'</td></tr>'
+      prompti(rangoj+'</table><div id="fermu" onclick="kasxi_prompton()">بستن</div>')
     }
-    prompti(rangoj+'</table><div id="fermu" onclick="kasxi_prompton()">بستن</div>')
+    else{
+      prompti(rangoj+'</table><div id="fermu" onclick="kasxi_prompton()">بستن</div>')
+    }
+  })
+}
+function acxetu(){
+  Android.acxeti_dialogo()
+}
+function sendi_ordojn(){
+  r.ordo(window.localStorage.getItem('seanco')+'/'+window.localStorage.getItem('ordoj')).get().then(function(k){
+    if(k){
+      window.localStorage.setItem('ordoj', '');
+      window.location.reload()
+    }
   })
 }
 function montri_helpanton(){
@@ -132,21 +151,19 @@ function preni_tabulojn(){
 }
 r.tabuloj(window.localStorage.getItem('seanco')).get().then(function(k){
   preni_tabulojn()
-  if(!finita){
-    r.tabulo(window.localStorage.getItem('seanco')+'/'+tu.value).get().then(function(k){
-      if(!k){
-        rezignu.style.display = 'none'
-        rekomencu.style.display = ''
-        nuligu.style.display = 'none'
-      }
-      else{
-        rezignu.style.display = ''
-        rekomencu.style.display = 'none'
-        nuligu.style.display = 'none'
-        mapi(k)
-      }
-    })
-  }
+  r.tabulo(window.localStorage.getItem('seanco')+'/'+tu.value).get().then(function(k){
+    if(!k){
+      rezignu.style.display = 'none'
+      rekomencu.style.display = ''
+      nuligu.style.display = 'none'
+    }
+    else{
+      rezignu.style.display = ''
+      rekomencu.style.display = 'none'
+      nuligu.style.display = 'none'
+      mapi(k)
+    }
+  })
   setInterval(function(){
     if(!finita){
       r.tabulo(window.localStorage.getItem('seanco')+'/'+tu.value).get().then(function(k){
